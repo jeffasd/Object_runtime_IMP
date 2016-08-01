@@ -60,6 +60,9 @@ struct objc_selector_name
 
 - (void)SELTypesIsCharPointer{
     
+    //将OC代码转换为C++代码
+//    clang -rewrite-objc
+    
     Class;
     
     int a = 0;
@@ -88,8 +91,9 @@ struct objc_selector_name
     for (int i = 0; ; i++) {
         if (p[i] == nil) {
             
-            //            break;
+            break;
         }else{
+            //可以判断出SEL类型在iOS中为char * 映射
             NSLog(@"%c", p[i]);
         }
     }
