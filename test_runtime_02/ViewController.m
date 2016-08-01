@@ -61,7 +61,7 @@ struct objc_selector_name
 - (void)SELTypesIsCharPointer{
     
     //将OC代码转换为C++代码
-//    clang -rewrite-objc
+//    clang -rewrite-objc + 源文件文件名
     
     Class;
     
