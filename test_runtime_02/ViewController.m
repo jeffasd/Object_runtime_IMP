@@ -11,11 +11,37 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+static const char * const kReplaceMethod = "Class_replaceMethod";
+
+
+struct objc_selector_jeffasd
+{
+    char *types;
+    char * sel_name;
+};
+
+
+struct objc_selector_name
+{
+    const char *    sel_id;
+    const char *    sel_types;
+};
+
+
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
+
++ (void)initialize
+{
+    
+    if (self == [self class]) {
+    
+        [self replaceMethod];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,6 +53,95 @@
     [self dynamicAddImplementationByIMPAndInvokeByMsgSendUseOnlyOneSEL];
     
     [self dynamicAddImplementationByIMPAndInvokeByMsgSendUseTwoSEL];
+    
+    [self SELTypesIsCharPointer];
+    
+}
+
+- (void)SELTypesIsCharPointer{
+    
+    Class;
+    
+    int a = 0;
+    
+    typeof(a);
+    
+    NSLog(@"the type is %s", @encode(typeof(a)));
+    
+    SEL sel = @selector(replaceViewDidLoad);
+    
+    NSLog(@"the type is %s", @encode(typeof(sel)));
+    NSLog(@"the sel is %s", sel);
+    
+    char * char_sel = "123";
+    NSLog(@"char is %s", char_sel);
+    
+    //    struct objc_selector_name sel_new = *sel;
+    
+    sizeof(sel);
+    
+    
+    char *p = sel;
+    
+    NSLog(@"the sizeof is %c", p[0]);
+    
+    for (int i = 0; ; i++) {
+        if (p[i] == nil) {
+            
+            //            break;
+        }else{
+            NSLog(@"%c", p[i]);
+        }
+    }
+    
+    NSLog(@"the sizeof is %lu", sizeof((*sel)));
+    
+    
+    struct objc_selector_jeffasd sel_jeffasd;
+    //    sel_jeffasd->sel_name = "ads";
+    
+    sel_jeffasd.sel_name = "asd";
+    sel_jeffasd.types = "types";
+    
+    struct objc_selector_jeffasd *pointer = &sel_jeffasd;
+    
+    
+    NSLog(@"the sel_jeffasd type is %s", @encode(typeof(pointer)));
+    
+    NSLog(@"char sel_jeffasd is %s", sel_jeffasd);
+    
+}
+
++ (void)replaceMethod{
+    
+    
+//    IMP replaceIMP = class_getMethodImplementation([self class], @selector(replaceViewDidLoad));
+//    //方法替换 - 将viewDidLoad 方法替换为customerViewDidLoad方法
+//    class_replaceMethod([self class], @selector(viewDidLoad), replaceIMP, kReplaceMethod);
+    
+    
+    Method originMethod = class_getInstanceMethod([self class], @selector(viewDidLoad));
+    Method replaceMethod = class_getInstanceMethod([self class], @selector(exchangeViewDidLoad));
+    //两个方法交换
+    method_exchangeImplementations(originMethod, replaceMethod);
+
+    
+    
+}
+
+- (void)replaceViewDidLoad{
+    
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor cyanColor];
+    
+    NSLog(@"the replaceViewDidLoad");
+}
+
+- (void)exchangeViewDidLoad{
+    
+    [self exchangeViewDidLoad];
+    
+    NSLog(@"the exchangeViewDidLoad");
 }
 
 #pragma mark - 示例代码
